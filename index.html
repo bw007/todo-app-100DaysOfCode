@@ -3,38 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./scss/main.css">
   <title>HabitHUB | #100DaysOfCode</title>
 </head>
 <body>
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <a href="#" class="sidebar__logo">
       <img src="./imgs/logo.png" alt="Logo">
     </a>
-    <div class="siderbar__calendar">
-      <input type="date" name="" id="">
-    </div>
     <div class="sidebar__inner">
-      <h3 class="sidebar__list-title">Tasks</h3>
-      <ul class="sidebar__lists-first">
-        <li class="sidebar__link">Today</li>
+      <h3 class="sidebar__title">Tasks</h3>
+      <ul class="sidebar__list">
+        <li class="sidebar__list-item">
+          <a class="sidebar__link" href="#">Today</a>
+          <span class="count">2</span>
+        </li>
       </ul>
-      <h3 class="sidebar__list-title">Lists</h3>
-      <ul class="sidebar__lists-last">
-        <li class="sidebar__link">Daily Routine</li>
-        <li class="sidebar__link">Study</li>
+      <h3 class="sidebar__title">Lists</h3>
+      <ul class="sidebar__list">
+        <li class="sidebar__list-item">
+          <a class="sidebar__link" href="#">Daily Routine</a>
+          <span class="count">3</span>
+        </li>
+        <li class="sidebar__list-item">
+          <a class="sidebar__link" href="#">Study</a>
+          <span class="count">0</span>
+        </li>
       </ul>
     </div>
   </aside>
-  <main class="wrap">
-    <header class="wrap__header">
-      <div class="wrap__header-profile"></div>
+  <!-- MAIN -->
+  <main class="main">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header__profile">
+        <div class="header__dark">
+          <img src="./imgs/moon.svg" alt="D">
+        </div>
+        <div class="header__notif">
+          <img src="./imgs/notif.svg" alt="N">
+        </div>
+        <div class="header__avatar">
+          <img src="./imgs/avatar.png" alt="A">
+        </div>
+      </div>
     </header>
-    <section class="wrap__inner">
+    <!-- MAIN CONTENT -->
+    <section class="wrap">
       <h1 class="wrap__title">Today</h1>
-      <div class="wrap__empty">
-        <img src="./imgs/empty.jpg" alt="">
+      <div class="wrap__inner">
+        <div class="wrap__empty">
+          <img src="./imgs/empty.jpg" alt="">
+          <h4>Nothing here yet...</h4>
+        </div>
       </div>
     </section>
+    <div class="add">+</div>
   </main>
 </body>
 </html>
