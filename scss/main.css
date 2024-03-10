@@ -55,6 +55,8 @@ body {
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
+  border: none;
+  outline: none;
   border-radius: 100px;
   position: absolute;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.15);
@@ -64,6 +66,91 @@ body {
   right: 50px;
   bottom: 50px;
   background-color: #F8F9FA;
+}
+.add:hover, .add:active {
+  background-color: #f1f1f1;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.35);
+  z-index: 99;
+}
+.modal__hidden {
+  display: none;
+}
+.modal__box {
+  max-width: 650px;
+  width: 100%;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 5px;
+}
+.modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.modal__title {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+.modal__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.modal__input {
+  outline: none;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+.modal__input--danger {
+  border-bottom: 1px solid #F56C6C;
+}
+.modal__input--danger::-moz-placeholder {
+  color: #F56C6C;
+}
+.modal__input--danger::placeholder {
+  color: #F56C6C;
+}
+.modal__btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.modal__btn {
+  font-size: 16px;
+  padding: 10px 25px;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+.modal__btn:hover, .modal__btn:active {
+  opacity: 0.85;
+}
+.modal__btn--success {
+  background-color: #67C23A;
+}
+.modal__btn--danger {
+  background-color: #F56C6C;
 }
 
 .header {
@@ -105,4 +192,39 @@ body {
   width: 100%;
   text-align: center;
   padding: 10px;
+}
+.wrap__list {
+  width: 100%;
+  margin-top: 20px;
+}
+.wrap__item {
+  width: 100%;
+  background-color: rgba(255, 238, 147, 0.6);
+  font-size: 16px;
+  padding: 10px 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 5px;
+}
+.wrap__item input {
+  display: none;
+}
+.wrap__item input:checked + label::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-color: orange;
+  display: inline-block;
+  border-radius: 3px;
+}
+.wrap__item-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  cursor: pointer;
 }/*# sourceMappingURL=main.css.map */
