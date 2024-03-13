@@ -55,17 +55,10 @@
     <!-- MAIN CONTENT -->
     <section class="wrap">
       <h1 class="wrap__title">Today</h1>
-      <div class="wrap__inner">
-        <div class="wrap__empty">
-          <img src="./imgs/empty.jpg" alt="">
-          <h4>Nothing here yet...</h4>
-        </div>
-      </div>
+      <div class="wrap__inner"></div>
     </section>
     <!-- ADD TASK -->
     <!-- <div class="add">+</div> -->
-    
-
   </main>
 
   <script src="./js/app.js"></script>
@@ -93,7 +86,25 @@
     
     const todo = new Todo(collection)
     todo.createModal();
+
+    const list = document.querySelector(".wrap__inner");
     
+    if (localStorage.getItem("data")) {
+      todo.render(JSON.parse(localStorage.getItem("data")));
+      console.log(JSON.parse(localStorage.getItem("data")));
+    } else {
+      let empty = document.createElement("div");
+      empty.classList.add("wrap__empty");
+
+      const emptyText = document.createElement("h4");
+      emptyText.textContent = "Nothing here yet...";
+
+      const emptyImg = document.createElement("img");
+      emptyImg.setAttribute("src", "./imgs/empty.jpg");
+
+      empty.append(emptyImg, emptyText);
+      list.appendChild(empty);
+    }
 
   </script>
 </body>
