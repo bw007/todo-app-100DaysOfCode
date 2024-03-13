@@ -1,6 +1,7 @@
 class Todo {
-  constructor(collection) {
+  constructor(collection, data) {
     this.collection = collection;
+    this.data = data;
   }
 
   createModal() {
@@ -98,7 +99,6 @@ class Todo {
             data[name] = value;
           });
           
-          
           let inp = 0;
           inputs.forEach(el => {
             if (!el.value.trim()) {
@@ -115,20 +115,25 @@ class Todo {
               el.classList.remove("modal__input--danger")
             });
             modal.classList.add("modal__hidden");
+
+            if (localStorage.getItem("data")) {
+              this.data = [ {...data} , ...JSON.parse(localStorage.getItem("data")) ];
+            } else {
+              this.data = [ {...data} ];
+            }
+            localStorage.setItem("data", JSON.stringify(this.data));
+
             setTimeout(() => {
-              this.render(data)
+              this.render(this.data)
             }, 100);
+
           }
-
         }
-
       }
-
     }
-
   }
 
-  render(...data) {
+  render(data) {
     const wrap = document.querySelector(".wrap__inner");
     console.log(data);
     wrap.innerHTML = "";
@@ -140,27 +145,36 @@ class Todo {
       list = document.createElement("div");
       list.classList.add("wrap__list");
 
-      data.forEach(item => {
+      data.forEach((item, i) => {
         let el = document.createElement("div");
         el.classList.add("wrap__item");
         
         let inp = document.createElement("input");
         inp.setAttribute("type", "checkbox");
         inp.setAttribute("name", "check");
-        inp.setAttribute("id", "check");
+        inp.setAttribute("id", Date.now() + i);
 
         let lb = document.createElement("label");
-        lb.setAttribute("for", "check");
+        lb.setAttribute("for", Date.now() + i);
         lb.classList.add("wrap__item-check");
 
-        let sp = document.createElement("span").textContent = item.title;
+        let sp = document.createElement("span");
+        sp.textContent = item.title;
 
-        el.append(inp, lb, sp);
+        let p = document.createElement("p");
+        p.textContent = item.desc;
+
+        let a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = item.tag;
+
+        el.append(inp, lb, sp, p, a);
         list.appendChild(el);
       });
 
       wrap.appendChild(list)
     }
-
   }
+
+
 }

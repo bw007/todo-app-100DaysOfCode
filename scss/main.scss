@@ -202,6 +202,9 @@ body {
   &__list {
     width: 100%;
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
   &__item {
     width: 100%;
@@ -224,6 +227,26 @@ body {
         display: inline-block;
         border-radius: 3px;
       }
+    }
+    span {
+      font-weight: 600;
+      width: 20vw;
+      font-size: 16px;
+    }
+    p {
+      font-weight: 100;~
+      font-size: 14px;
+      color: #337ecc;
+    }
+    a {
+      text-decoration: none;
+      font-weight: normal;
+      border: 1px solid #c45656;
+      padding: 2px 10px;
+      border-radius: 3px;
+      font-size: 14px;
+      color: #c45656;
+      margin-left: auto;
     }
   }
   &__item-check {
