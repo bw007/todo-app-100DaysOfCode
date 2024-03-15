@@ -1,3 +1,36 @@
+const { hash } = window.location;
+
+const links = document.querySelectorAll(".sidebar__link");
+const logo = document.querySelector(".sidebar__logo");
+
+if (!hash) {
+  window.location = "index.html#today";
+}
+
+logo.onclick = () => {
+  links.forEach(el => {
+    if (el.getAttribute("href", hash) == hash) {
+      el.classList.add("sidebar__link--active")
+    } else {
+      el.classList.remove("sidebar__link--active")
+    }
+  });
+}
+
+links.forEach(el => {
+  if (el.getAttribute("href", hash) == hash) {
+    el.classList.add("sidebar__link--active")
+  }
+  
+  el.onclick = (e) => {
+    links.forEach(link => {
+      link.classList.remove("sidebar__link--active")
+    });
+    el.classList.add("sidebar__link--active")
+  }
+});
+
+// Class
 class Todo {
   constructor(collection, data) {
     this.collection = collection;
@@ -152,10 +185,10 @@ class Todo {
         let inp = document.createElement("input");
         inp.setAttribute("type", "checkbox");
         inp.setAttribute("name", "check");
-        inp.setAttribute("id", Date.now() + i);
+        inp.setAttribute("id", i);
 
         let lb = document.createElement("label");
-        lb.setAttribute("for", Date.now() + i);
+        lb.setAttribute("for", i);
         lb.classList.add("wrap__item-check");
 
         let sp = document.createElement("span");
