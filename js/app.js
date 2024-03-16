@@ -1,3 +1,4 @@
+// Class
 class Todo {
   constructor(collection, data) {
     this.collection = collection;
@@ -16,6 +17,18 @@ class Todo {
       addBtn.textContent = "+";
       main.append(addBtn)
     }
+
+    let nav = document.querySelector("#list");
+    let tags = ["more", "sport", "study", "daily-routine"].reverse();
+    nav.innerHTML = "";
+    tags.forEach(item => {
+      nav.innerHTML += `
+        <a class="sidebar__link" href="#${item}">
+          ${item.split("-").join(" ")}
+          <span class="count" id="daily">3</span>
+        </a>
+      `
+    });
 
     addBtn.onclick = (e) => {
       let modal = document.querySelector(".modal");
@@ -45,13 +58,29 @@ class Todo {
         modalForm.classList.add("modal__form");
 
         this.collection.forEach(item => {
-          let input = document.createElement("input");
-          input.classList.add("modal__input");
-          input.setAttribute("required", item.req);
-          input.setAttribute("type", item.type);
-          input.setAttribute("name", item.name);
-          input.placeholder = item.text;
-          modalForm.append(input);
+          if (item.type == "select") {
+            let select = document.createElement("select");
+            select.classList.add("modal__select");
+            select.setAttribute("required", item.req);
+            select.setAttribute("name", item.name);
+            tags.forEach(opt => {
+              
+              let option = document.createElement("option")
+              option.textContent = opt.split("-").join(" ");
+              option.value = opt;
+              select.appendChild(option);
+            });
+            
+            modalForm.appendChild(select);
+          } else {
+            let input = document.createElement("input");
+            input.classList.add("modal__input");
+            input.setAttribute("required", item.req);
+            input.setAttribute("type", item.type);
+            input.setAttribute("name", item.name);
+            input.placeholder = item.text;
+            modalForm.append(input);
+          }
         });
 
         let btnParent = document.createElement("div");
@@ -97,6 +126,8 @@ class Todo {
 
           form.forEach((value, name) => {
             data[name] = value;
+            data.status = false;
+            data.createdTime = new Date();
           });
           
           let inp = 0;
@@ -109,7 +140,7 @@ class Todo {
             }
           });
 
-          if (inp == 3) {
+          if (inp == 2) {
             modalForm.reset();
             inputs.forEach(el => {
               el.classList.remove("modal__input--danger")
@@ -138,6 +169,9 @@ class Todo {
     console.log(data);
     wrap.innerHTML = "";
 
+    let links = document.querySelectorAll("#list .sidebar__link");
+    const logo = document.querySelector(".sidebar__logo");
+
     let list = document.querySelector(".wrap__list");
     if (list) {
       
@@ -152,10 +186,14 @@ class Todo {
         let inp = document.createElement("input");
         inp.setAttribute("type", "checkbox");
         inp.setAttribute("name", "check");
-        inp.setAttribute("id", Date.now() + i);
+        inp.setAttribute("id", i);
+
+        inp.onchange = (e) => {
+          console.log(data);
+        }
 
         let lb = document.createElement("label");
-        lb.setAttribute("for", Date.now() + i);
+        lb.setAttribute("for", i);
         lb.classList.add("wrap__item-check");
 
         let sp = document.createElement("span");
@@ -165,8 +203,15 @@ class Todo {
         p.textContent = item.desc;
 
         let a = document.createElement("a");
-        a.setAttribute("href", "#");
-        a.textContent = item.tag;
+        a.setAttribute("href", "#" + item.tag);
+        a.textContent = item.tag?.split("-").join(" ");
+        a.onclick = () => {
+          window.location = "#" + item.tag;
+          links.forEach(link => {
+            link.classList.toggle("sidebar__link--active", link.getAttribute("href") == "#" + item.tag)
+          });
+          this.render(data.filter(f => f.tag == item.tag));
+        }
 
         el.append(inp, lb, sp, p, a);
         list.appendChild(el);
