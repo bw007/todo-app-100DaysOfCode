@@ -1,32 +1,21 @@
 const { hash } = window.location;
-
 const links = document.querySelectorAll(".sidebar__link");
 const logo = document.querySelector(".sidebar__logo");
 
-if (!hash) {
-  window.location = "index.html#today";
-}
+if (!hash) window.location = "index.html#today";
 
 logo.onclick = () => {
-  links.forEach(el => {
-    if (el.getAttribute("href", hash) == hash) {
-      el.classList.add("sidebar__link--active")
-    } else {
-      el.classList.remove("sidebar__link--active")
-    }
-  });
+  for (const el of links) {
+    el.classList.toggle("sidebar__link--active", el.getAttribute("href") === "#today");
+  }
 }
 
 links.forEach(el => {
-  if (el.getAttribute("href", hash) == hash) {
-    el.classList.add("sidebar__link--active")
-  }
+  el.classList.toggle("sidebar__link--active", el.getAttribute("href") === hash);
   
   el.onclick = (e) => {
-    links.forEach(link => {
-      link.classList.remove("sidebar__link--active")
-    });
-    el.classList.add("sidebar__link--active")
+    links.forEach(link => link.classList.remove("sidebar__link--active"));
+    el.classList.add("sidebar__link--active");
   }
 });
 
