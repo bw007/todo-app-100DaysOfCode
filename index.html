@@ -12,7 +12,7 @@
 <body>
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <a href="#today" class="sidebar__logo">
+    <a href="#today" onclick="alert()" class="sidebar__logo">
       <img src="./imgs/logo.png" alt="Logo">
     </a>
     <nav class="sidebar__nav">
@@ -20,20 +20,11 @@
       <div class="sidebar__inner">
         <a class="sidebar__link" href="#today">
           Today
-          <span class="count">2</span>
+          <span class="count" id="today">2</span>
         </a>
       </div>
       <h3 class="sidebar__title">Lists</h3>
-      <div class="sidebar__inner">
-        <a class="sidebar__link" href="#daily-routine">
-          Daily Routine
-          <span class="count">3</span>
-        </a>
-        <a class="sidebar__link" href="#study">
-          Study
-          <span class="count">0</span>
-        </a>
-      </div>
+      <div class="sidebar__inner" id="list"></div>
     </nav>
   </aside>
   <!-- MAIN -->
@@ -78,7 +69,7 @@
       },
       {
         text: "Set a tag for your task",
-        type: "text",
+        type: "select",
         req: true,
         name: "tag"
       }
@@ -88,23 +79,73 @@
     todo.createModal();
 
     const list = document.querySelector(".wrap__inner");
-    
-    if (localStorage.getItem("data")) {
-      todo.render(JSON.parse(localStorage.getItem("data")));
-      console.log(JSON.parse(localStorage.getItem("data")));
-    } else {
-      let empty = document.createElement("div");
-      empty.classList.add("wrap__empty");
+    let { hash } = window.location;
+    if (!hash) window.location = "index.html#today";
 
-      const emptyText = document.createElement("h4");
-      emptyText.textContent = "Nothing here yet...";
+    const render = (h) => {
+      let data = JSON.parse(localStorage.getItem("data"));
+      console.log(h);
+      
+      if (data) {
+        
+        switch (h) {
+          case "#today":
+            todo.render(data);
+            break;
+          case "#daily-routine":
+            todo.render(data.filter(s => s.tag == "daily-routine"));
+            break;
+          case "#study":
+            todo.render(data.filter(s => s.tag == "study"));
+            break;
+          case "#more":
+            todo.render(data.filter(s => s.tag == "more"));
+            break;
+          case "#sport":
+            todo.render(data.filter(s => s.tag == "sport"));
+            break;
+          default:
+            
+            break;
+        }
+      } else {
+        let empty = document.createElement("div");
+        empty.classList.add("wrap__empty");
 
-      const emptyImg = document.createElement("img");
-      emptyImg.setAttribute("src", "./imgs/empty.jpg");
+        const emptyText = document.createElement("h4");
+        emptyText.textContent = "Nothing here yet...";
 
-      empty.append(emptyImg, emptyText);
-      list.appendChild(empty);
+        const emptyImg = document.createElement("img");
+        emptyImg.setAttribute("src", "./imgs/empty.jpg");
+
+        empty.append(emptyImg, emptyText);
+        list.innerHTML = "";
+        list.appendChild(empty);
+      }
+    };
+    render(hash || window.location.hash);
+
+
+    const links = document.querySelectorAll(".sidebar__link");
+    const logo = document.querySelector(".sidebar__logo");
+
+    logo.onclick = (e) => {
+      for (const el of links) {
+        el.classList.toggle("sidebar__link--active", el.getAttribute("href") === "#today");
+      }
+      console.log(logo.getAttribute("href"));
+      render(logo.getAttribute("href"))
     }
+
+    links.forEach(el => {
+      el.classList.toggle("sidebar__link--active", el.getAttribute("href") === window.location.hash);
+      
+      el.onclick = (e) => {
+        links.forEach(link => link.classList.remove("sidebar__link--active"));
+        el.classList.add("sidebar__link--active");
+        render(el.getAttribute("href"))
+      }
+    });
 
   </script>
 </body>

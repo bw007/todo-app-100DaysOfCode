@@ -26,6 +26,7 @@ body {
   justify-content: space-between;
   padding: 10px 15px;
   border-radius: 5px;
+  text-transform: capitalize;
   cursor: pointer;
   color: #000;
   text-decoration: none;
@@ -110,7 +111,7 @@ body {
   justify-content: center;
   gap: 20px;
 }
-.modal__input {
+.modal__input, .modal__select {
   outline: none;
   width: 100%;
   padding: 10px 15px;
@@ -118,14 +119,18 @@ body {
   border: none;
   border-bottom: 1px solid lightgray;
 }
-.modal__input--danger {
+.modal__input--danger, .modal__select--danger {
   border-bottom: 1px solid #F56C6C;
 }
-.modal__input--danger::-moz-placeholder {
+.modal__input--danger::-moz-placeholder, .modal__select--danger::-moz-placeholder {
   color: #F56C6C;
 }
-.modal__input--danger::placeholder {
+.modal__input--danger::placeholder, .modal__select--danger::placeholder {
   color: #F56C6C;
+}
+.modal__select, .modal__select option {
+  background-color: transparent;
+  text-transform: capitalize;
 }
 .modal__btns {
   display: flex;
@@ -164,15 +169,29 @@ body {
   gap: 20px;
 }
 .header__profile div {
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 .wrap {
   padding: 10px 20px;
 }
+.wrap__title {
+  padding: 10px 0;
+}
 .wrap__inner {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: calc(100vh - 144px);
+  overflow-y: scroll;
+}
+.wrap__inner::-webkit-scrollbar {
+  width: 6px;
+}
+.wrap__inner::-webkit-scrollbar-thumb {
+  background-color: rgb(175, 175, 175);
+  border-radius: 4px;
 }
 .wrap__empty {
   display: flex;
@@ -197,6 +216,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 100%;
 }
 .wrap__item {
   width: 100%;
