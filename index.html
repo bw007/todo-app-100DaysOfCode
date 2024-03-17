@@ -12,7 +12,7 @@
 <body>
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <a href="#today" onclick="alert()" class="sidebar__logo">
+    <a href="#today" class="sidebar__logo">
       <img src="./imgs/logo.png" alt="Logo">
     </a>
     <nav class="sidebar__nav">
@@ -95,10 +95,8 @@
 
     const render = (h) => {
       let data = JSON.parse(localStorage.getItem("data"));
-      console.log(h);
       
       if (data) {
-        
         switch (h) {
           case "#today":
             todo.render(data.filter(s => convertDate(s.deadline) == convertDate(new Date())));
@@ -135,7 +133,6 @@
       }
     };
     render(hash || window.location.hash);
-
 
     const links = document.querySelectorAll(".sidebar__link");
     const logo = document.querySelector(".sidebar__logo");

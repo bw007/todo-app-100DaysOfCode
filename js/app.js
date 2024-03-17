@@ -42,12 +42,6 @@ class Todo {
         modal = document.createElement("div");
         modal.classList.add("modal");
 
-        modal.onclick = (e) => {
-          if (e.target.classList.contains("modal")) {
-            modal.classList.add("modal__hidden");
-          }
-        }
-
         let modalbox = document.createElement("div");
         modalbox.classList.add("modal__box");
 
@@ -105,6 +99,15 @@ class Todo {
 
         var inputs = document.querySelectorAll('.modal__input');
 
+        modal.onclick = (e) => {
+          if (e.target.classList.contains("modal")) {
+            modal.classList.add("modal__hidden");
+            inputs.forEach(el => {
+              el.classList.remove("modal__input--danger")
+            });
+          }
+        }
+
         cancel.onclick = (e) => {
           e.preventDefault();
           
@@ -113,7 +116,7 @@ class Todo {
           inputs.forEach(el => {
             el.classList.remove("modal__input--danger")
           });
-
+          
           setTimeout(() => {
             modal.classList.add("modal__hidden");
           }, 100);
@@ -152,12 +155,12 @@ class Todo {
             const storedData = localStorage.getItem("data");
 
             if (storedData) {
-              this.data = JSON.parse(storedData);
+              this.data = [ ...JSON.parse(storedData), { ...data } ];
             } else {
-              this.data = [{ ...data }];
-              localStorage.setItem("data", JSON.stringify(this.data));
+              this.data = [ { ...data } ];
             }
-            
+            localStorage.setItem("data", JSON.stringify(this.data));
+
             const { hash } = window.location;
             const currentDate = convertDate(new Date());
 
