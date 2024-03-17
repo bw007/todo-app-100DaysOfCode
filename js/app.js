@@ -152,12 +152,12 @@ class Todo {
             const storedData = localStorage.getItem("data");
 
             if (storedData) {
-              this.data = JSON.parse(storedData);
+              this.data = [ ...JSON.parse(storedData), { ...data } ];
             } else {
-              this.data = [{ ...data }];
-              localStorage.setItem("data", JSON.stringify(this.data));
+              this.data = [ { ...data } ];
             }
-            
+            localStorage.setItem("data", JSON.stringify(this.data));
+
             const { hash } = window.location;
             const currentDate = convertDate(new Date());
 
