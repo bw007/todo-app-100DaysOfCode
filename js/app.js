@@ -1,4 +1,5 @@
 // Class
+
 class Todo {
   constructor(collection, data) {
     this.collection = collection;
@@ -19,7 +20,7 @@ class Todo {
     }
 
     let nav = document.querySelector("#list");
-    let tags = ["more", "sport", "study", "daily-routine"].reverse();
+    let tags = ["more", "study", "daily-routine"].reverse();
     nav.innerHTML = "";
     tags.forEach(item => {
       nav.innerHTML += `
@@ -125,6 +126,7 @@ class Todo {
           let form = new FormData(modalForm);
 
           form.forEach((value, name) => {
+            data.id = Date.now();
             data[name] = value;
             data.status = false;
             data.createdTime = new Date();
@@ -140,24 +142,39 @@ class Todo {
             }
           });
 
-          if (inp == 2) {
+          if (inp == 3) {
             modalForm.reset();
             inputs.forEach(el => {
               el.classList.remove("modal__input--danger")
             });
             modal.classList.add("modal__hidden");
 
-            if (localStorage.getItem("data")) {
-              this.data = [ {...data} , ...JSON.parse(localStorage.getItem("data")) ];
+            const storedData = localStorage.getItem("data");
+
+            if (storedData) {
+              this.data = JSON.parse(storedData);
             } else {
-              this.data = [ {...data} ];
+              this.data = [{ ...data }];
+              localStorage.setItem("data", JSON.stringify(this.data));
             }
-            localStorage.setItem("data", JSON.stringify(this.data));
+            
+            const { hash } = window.location;
+            const currentDate = convertDate(new Date());
+
+            const filteredData = this.data.filter(item => {
+              switch (hash) {
+                case "#all":
+                  return true;
+                case "#today":
+                  return convertDate(item.deadline) === currentDate;
+                default:
+                  return item.tag === hash.slice(1);
+              }
+            });
 
             setTimeout(() => {
-              this.render(this.data)
+              this.render(filteredData);
             }, 100);
-
           }
         }
       }
@@ -166,11 +183,9 @@ class Todo {
 
   render(data) {
     const wrap = document.querySelector(".wrap__inner");
-    console.log(data);
     wrap.innerHTML = "";
 
-    let links = document.querySelectorAll("#list .sidebar__link");
-    const logo = document.querySelector(".sidebar__logo");
+    let links = document.querySelectorAll(".sidebar__link");
 
     let list = document.querySelector(".wrap__list");
     if (list) {
@@ -187,9 +202,16 @@ class Todo {
         inp.setAttribute("type", "checkbox");
         inp.setAttribute("name", "check");
         inp.setAttribute("id", i);
+        inp.checked = item.status;
 
         inp.onchange = (e) => {
-          console.log(data);
+          this.data = [ 
+            ...JSON.parse(localStorage.getItem("data")).map(unq => {
+              if (unq.id != item.id) return unq;
+              return { ...unq, status: !unq.status }
+            })
+          ];
+          localStorage.setItem("data", JSON.stringify(this.data));
         }
 
         let lb = document.createElement("label");
@@ -203,23 +225,23 @@ class Todo {
         p.textContent = item.desc;
 
         let a = document.createElement("a");
-        a.setAttribute("href", "#" + item.tag);
+        a.setAttribute("href", `#${item.tag}`);
         a.textContent = item.tag?.split("-").join(" ");
+
         a.onclick = () => {
-          window.location = "#" + item.tag;
+          window.location = `#${item.tag}`;
           links.forEach(link => {
-            link.classList.toggle("sidebar__link--active", link.getAttribute("href") == "#" + item.tag)
+            link.classList.toggle("sidebar__link--active", link.getAttribute("href") == `#${item.tag}`)
           });
-          this.render(data.filter(f => f.tag == item.tag));
+
+          this.render(JSON.parse(localStorage.getItem("data")).filter(f => f.tag == item.tag));
         }
 
         el.append(inp, lb, sp, p, a);
         list.appendChild(el);
       });
-
+      
       wrap.appendChild(list)
     }
   }
-
-
 }
