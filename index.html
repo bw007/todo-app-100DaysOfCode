@@ -91,7 +91,7 @@
 
     const list = document.querySelector(".wrap__inner");
     let { hash } = window.location;
-    if (!hash) window.location = "index.html#today";
+    if (!hash) window.location = "#today";
 
     const render = (h) => {
       let data = JSON.parse(localStorage.getItem("data"));
