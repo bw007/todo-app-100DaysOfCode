@@ -98,7 +98,6 @@
       console.log(h);
       
       if (data) {
-        
         switch (h) {
           case "#today":
             todo.render(data.filter(s => convertDate(s.deadline) == convertDate(new Date())));
