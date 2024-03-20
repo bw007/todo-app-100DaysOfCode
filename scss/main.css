@@ -39,6 +39,15 @@ body {
 .sidebar__link--active {
   background-color: #f3f5f7;
 }
+.sidebar__link .count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 16px;
+  color: #F56C6C;
+}
 
 .main {
   display: flex;
@@ -258,6 +267,14 @@ body {
   font-size: 14px;
   color: #c45656;
   margin-left: auto;
+  transition: background-color 0.15s linear;
+}
+.wrap__item a:hover {
+  background-color: rgba(245, 108, 108, 0.1254901961);
+}
+.wrap__item button {
+  border: none;
+  cursor: pointer;
 }
 .wrap__item-check {
   display: inline-flex;

@@ -12,23 +12,14 @@
 <body>
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <a href="#today" class="sidebar__logo">
+    <a href="#today" id="link" class="sidebar__logo">
       <img src="./imgs/logo.png" alt="Logo">
     </a>
     <nav class="sidebar__nav">
       <h3 class="sidebar__title">Tasks</h3>
-      <div class="sidebar__inner">
-        <a class="sidebar__link" href="#today">
-          Today
-          <span class="count" id="today">2</span>
-        </a>
-        <a class="sidebar__link" href="#all">
-          All
-          <span class="count" id="today">2</span>
-        </a>
-      </div>
+      <div class="sidebar__inner" id="first"></div>
       <h3 class="sidebar__title">Lists</h3>
-      <div class="sidebar__inner" id="list"></div>
+      <div class="sidebar__inner" id="last"></div>
     </nav>
   </aside>
   <!-- MAIN -->
@@ -84,75 +75,19 @@
         req: true,
         name: "tag"
       }
-    ]
-    
-    const todo = new Todo(collection)
-    todo.createModal();
+    ];
 
-    const list = document.querySelector(".wrap__inner");
+    const tags = ["more", "study", "daily-routine"];
+    const menu = ["today", "all"]
+    const data = JSON.parse(localStorage.getItem("data")) || [];
+
     let { hash } = window.location;
-    if (!hash) window.location = "#today";
-
-    const render = (h) => {
-      let data = JSON.parse(localStorage.getItem("data"));
-      
-      if (data) {
-        switch (h) {
-          case "#today":
-            todo.render(data.filter(s => convertDate(s.deadline) == convertDate(new Date())));
-            break;
-          case "#daily-routine":
-            todo.render(data.filter(s => s.tag == "daily-routine"));
-            break;
-          case "#study":
-            todo.render(data.filter(s => s.tag == "study"));
-            break;
-          case "#more":
-            todo.render(data.filter(s => s.tag == "more"));
-            break;
-          case "#all":
-            todo.render(data);
-            break;
-          default:
-            
-            break;
-        }
-      } else {
-        let empty = document.createElement("div");
-        empty.classList.add("wrap__empty");
-
-        const emptyText = document.createElement("h4");
-        emptyText.textContent = "Nothing here yet...";
-
-        const emptyImg = document.createElement("img");
-        emptyImg.setAttribute("src", "./imgs/empty.jpg");
-
-        empty.append(emptyImg, emptyText);
-        list.innerHTML = "";
-        list.appendChild(empty);
-      }
-    };
-    render(hash || window.location.hash);
-
-    const links = document.querySelectorAll(".sidebar__link");
-    const logo = document.querySelector(".sidebar__logo");
-
-    logo.onclick = (e) => {
-      for (const el of links) {
-        el.classList.toggle("sidebar__link--active", el.getAttribute("href") === "#today");
-      }
-      render(logo.getAttribute("href"))
-    }
-
-    links.forEach(el => {
-      el.classList.toggle("sidebar__link--active", el.getAttribute("href") === window.location.hash);
-      
-      el.onclick = (e) => {
-        links.forEach(link => link.classList.remove("sidebar__link--active"));
-        el.classList.add("sidebar__link--active");
-        render(el.getAttribute("href"))
-      }
-    });
+    if (!hash) window.location = "index.html#today";
+    
+    const todo = new Todo(collection, tags, menu, data);
+    todo.createMenu();
+    todo.getStoredData(hash, data);
+    todo.createModal();
 
   </script>
 </body>
