@@ -1,35 +1,87 @@
 // Class
 
 class Todo {
-  constructor(collection, data) {
+  collection = [];
+  tags = [];
+  menu = [];
+  constructor(collection, tags, menu, data) {
     this.collection = collection;
+    this.tags = tags?.reverse();
+    this.menu = menu;
     this.data = data;
+  }
+
+  createMenu() {
+    const firstNav = document.querySelector("#first"),
+      lastNav = document.querySelector("#last");
+
+    this.data = JSON.parse(localStorage.getItem("data")) || [];
+    console.log(this.data);
+    
+    firstNav.innerHTML = "";
+    this.menu.forEach(item => {
+      firstNav.innerHTML += `
+        <a class="sidebar__link" id="link" href="#${item}">
+          ${item.split("-").join(" ")}
+          <span class="count" id="daily">
+            ${ item == "today" 
+              ? this.data?.filter(f => convertDate(f.deadline) == convertDate(new Date())).length ?? 0 
+              : this.data?.length ?? 0 
+            }
+          </span>
+        </a>
+      `
+    })
+
+    lastNav.innerHTML = "";
+    this.tags.forEach(item => {
+      lastNav.innerHTML += `
+        <a class="sidebar__link" id="link" href="#${item}">
+          ${item.split("-").join(" ")}
+          <span class="count" id="daily">
+            ${ this.data?.filter(f => f.tag == item).length ?? 0 }
+          </span>
+        </a>
+      `
+    });
+
+    const links = document.querySelectorAll(".sidebar__link");
+    const logo = document.querySelector(".sidebar__logo");
+
+    const home = document.querySelector(".sidebar__nav [href='#today']");
+
+    logo.onclick = () => {
+      for (const i of links) {
+        i.classList.remove("sidebar__link--active");
+      }
+      home.classList.add("sidebar__link--active");
+      this.getStoredData(home.getAttribute("href"), this.data)
+    }
+
+    links.forEach(el => {
+      el.classList.toggle("sidebar__link--active", el.getAttribute("href") === window.location.hash);
+
+      el.onclick = (e) => {
+        for (const i of links) {
+          i.classList.remove("sidebar__link--active");
+        }
+
+        el.classList.add("sidebar__link--active");
+        this.getStoredData(el.getAttribute("href"), this.data)
+      }
+    });
   }
 
   createModal() {
     const main = document.querySelector(".main");
     let addBtn = document.querySelector(".add");
 
-    if (addBtn) {
-      
-    } else {
+    if (!addBtn) {
       addBtn = document.createElement("button");
       addBtn.classList.add("add");
       addBtn.textContent = "+";
       main.append(addBtn)
     }
-
-    let nav = document.querySelector("#list");
-    let tags = ["more", "study", "daily-routine"].reverse();
-    nav.innerHTML = "";
-    tags.forEach(item => {
-      nav.innerHTML += `
-        <a class="sidebar__link" href="#${item}">
-          ${item.split("-").join(" ")}
-          <span class="count" id="daily">3</span>
-        </a>
-      `
-    });
 
     addBtn.onclick = (e) => {
       let modal = document.querySelector(".modal");
@@ -58,8 +110,7 @@ class Todo {
             select.classList.add("modal__select");
             select.setAttribute("required", item.req);
             select.setAttribute("name", item.name);
-            tags.forEach(opt => {
-              
+            this.tags.forEach(opt => {
               let option = document.createElement("option")
               option.textContent = opt.split("-").join(" ");
               option.value = opt;
@@ -176,12 +227,49 @@ class Todo {
             });
 
             setTimeout(() => {
+              this.createMenu();
               this.render(filteredData);
             }, 100);
           }
         }
       }
     }
+  }
+
+  getStoredData(hash, data) {
+      if (data.length) {
+        switch (hash) {
+          case "#today":
+            this.render(data.filter(s => convertDate(s.deadline) == convertDate(new Date())));
+            break;
+          case "#daily-routine":
+            this.render(data.filter(s => s.tag == "daily-routine"));
+            break;
+          case "#study":
+            this.render(data.filter(s => s.tag == "study"));
+            break;
+          case "#more":
+            this.render(data.filter(s => s.tag == "more"));
+            break;
+          case "#all":
+            this.render(data);
+            break;
+        }
+      } else {
+          const list = document.querySelector(".wrap__inner");
+          let empty = document.createElement("div");
+          empty.classList.add("wrap__empty");
+
+          const emptyText = document.createElement("h4");
+          emptyText.textContent = "Nothing here yet...";
+
+          const emptyImg = document.createElement("img");
+          emptyImg.setAttribute("src", "./imgs/empty.jpg");
+
+          empty.append(emptyImg, emptyText);
+          list.innerHTML = "";
+          list.appendChild(empty);
+      }
   }
 
   render(data) {
@@ -191,9 +279,7 @@ class Todo {
     let links = document.querySelectorAll(".sidebar__link");
 
     let list = document.querySelector(".wrap__list");
-    if (list) {
-      
-    } else {
+    if (!list) {
       list = document.createElement("div");
       list.classList.add("wrap__list");
 
@@ -240,7 +326,24 @@ class Todo {
           this.render(JSON.parse(localStorage.getItem("data")).filter(f => f.tag == item.tag));
         }
 
-        el.append(inp, lb, sp, p, a);
+        let del = document.createElement("button");
+        del.title = "Remove";
+        del.innerHTML = `<img src='./imgs/trash.png'>`
+        
+        del.onclick = () => {
+          this.data = [ ...JSON.parse(localStorage.getItem("data")).filter(f => f.id != item.id) ];
+          localStorage.setItem("data", JSON.stringify(this.data));
+          setTimeout(() => {
+            this.getStoredData(window.location.hash, this.data);
+          }, 100);
+          this.createMenu();
+        }
+
+        let edit = document.createElement("button");
+        edit.title = "Edit";
+        edit.innerHTML = `<img src='./imgs/edit.png'>`
+
+        el.append(inp, lb, sp, p, a, del, edit);
         list.appendChild(el);
       });
       
