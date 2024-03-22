@@ -28,13 +28,13 @@
     <header class="header">
       <div class="header__profile">
         <div class="header__dark">
-          <img src="./imgs/moon.svg" alt="D">
+          <img src="./imgs/sun.svg" alt="D">
         </div>
-        <div class="header__notif">
+        <div class="header__notif" data-count="0">
           <img src="./imgs/notif.svg" alt="N">
         </div>
         <div class="header__avatar">
-          <img src="./imgs/avatar.png" alt="A">
+          <img src="./imgs/profile.svg" alt="A">
         </div>
       </div>
     </header>
@@ -88,6 +88,19 @@
     todo.createMenu();
     todo.getStoredData(hash, data);
     todo.addData();
+
+    const bell = document.querySelector(".header__notif");
+    bell.dataset.count = data.filter(f => convertDate(f.deadline) == convertDate(new Date())).length;
+
+    bell.onclick = () => {
+      todo.notifMessage(`Today you have ${bell.dataset.count} tasks`);
+
+      setTimeout(() => {
+        window.location = "#today";
+        todo.createMenu();
+        todo.getStoredData("#today", data);
+      }, 1000);
+    };
 
   </script>
 </body>
