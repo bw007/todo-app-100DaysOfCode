@@ -397,7 +397,7 @@ class Todo {
 
         let del = document.createElement("button");
         del.title = "Remove";
-        del.innerHTML = `<img src='./imgs/trash.png'>`
+        del.innerHTML = `<img src='./imgs/trash.svg'>`
         
         del.onclick = () => {
           this.data = [ ...JSON.parse(localStorage.getItem("data")).filter(f => f.id != item.id) ];
@@ -411,7 +411,7 @@ class Todo {
 
         let edit = document.createElement("button");
         edit.title = "Edit";
-        edit.innerHTML = `<img src='./imgs/edit.png'>`
+        edit.innerHTML = `<img src='./imgs/edit.svg'>`
 
         edit.onclick = () => {
           this.createModal("edit", item.id);

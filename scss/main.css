@@ -344,7 +344,12 @@ body {
 }
 .wrap__item button {
   border: none;
+  background: transparent;
+  transition: opacity 0.15s linear;
   cursor: pointer;
+}
+.wrap__item button img {
+  width: 20px;
 }
 .wrap__item button:hover {
   opacity: 0.7;

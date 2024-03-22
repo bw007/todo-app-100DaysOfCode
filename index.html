@@ -93,7 +93,7 @@
     bell.dataset.count = data.filter(f => convertDate(f.deadline) == convertDate(new Date())).length;
 
     bell.onclick = () => {
-      todo.notifMessage(`Today you have ${bell.dataset.count} tasks`);
+      if (bell.dataset.count > 0) todo.notifMessage(`Today you have ${bell.dataset.count} tasks`);
 
       setTimeout(() => {
         window.location = "#today";

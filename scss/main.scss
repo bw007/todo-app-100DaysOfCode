@@ -350,6 +350,11 @@ body {
     }
     button {
       border: none;
+      background: transparent;
+      transition: opacity 0.15s linear;
+      img {
+        width: 20px;
+      }
       cursor: pointer;
       &:hover {
         opacity: 0.7;
