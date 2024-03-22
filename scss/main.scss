@@ -13,10 +13,11 @@ body {
   position: fixed;
   top: -150px;
   left: calc((100% - 200px) / 2);
-  width: 250px;
+  width: 280px;
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid #48C1B5;
+  background-color: #48C1B510;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -213,7 +214,7 @@ body {
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  padding: 10px 20px;
+  padding: 20px;
   &__profile {
     display: flex;
     align-items: center;
@@ -221,11 +222,38 @@ body {
     div {
       display: flex;
       align-items: center;
+      justify-content: center;
       cursor: pointer;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background-color: #F8F9FA;
+      opacity: 0.80;
+      transition: background-color 0.15s linear;
+      &:hover {
+        background-color: #f1f1f1;
+      }
     }
   }
   &__dark {}
-  &__notif {}
+  &__notif {
+    position: relative;
+    &::after {
+      content: attr(data-count);
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 16px;
+      height: 16px;
+      background-color: #F56C6C;
+      color: #FFF;
+      border-radius: 20px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   &__avatar {}
 }
 
