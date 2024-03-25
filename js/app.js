@@ -331,7 +331,7 @@ class Todo {
       emptyText.textContent = "Nothing here yet...";
 
       const emptyImg = document.createElement("img");
-      emptyImg.setAttribute("src", "./imgs/empty.jpg");
+      emptyImg.setAttribute("src", "./imgs/empty.png");
 
       empty.append(emptyImg, emptyText);
       list.innerHTML = "";
@@ -379,13 +379,16 @@ class Todo {
 
         let sp = document.createElement("span");
         sp.textContent = item.title;
+        sp.title = item.title;
 
         let p = document.createElement("p");
         p.textContent = item.desc;
+        p.title = item.desc;
 
         let a = document.createElement("a");
         a.setAttribute("href", `#${item.tag}`);
         a.textContent = item.tag?.split("-").join(" ");
+        a.title = item.tag?.split("-").join(" ");
 
         a.onclick = () => {
           window.location = `#${item.tag}`;
@@ -397,7 +400,7 @@ class Todo {
 
         let del = document.createElement("button");
         del.title = "Remove";
-        del.innerHTML = `<img src='./imgs/trash.png'>`
+        del.innerHTML = `<img src='./imgs/trash.svg'>`
         
         del.onclick = () => {
           this.data = [ ...JSON.parse(localStorage.getItem("data")).filter(f => f.id != item.id) ];
@@ -411,7 +414,7 @@ class Todo {
 
         let edit = document.createElement("button");
         edit.title = "Edit";
-        edit.innerHTML = `<img src='./imgs/edit.png'>`
+        edit.innerHTML = `<img src='./imgs/edit.svg'>`
 
         edit.onclick = () => {
           this.createModal("edit", item.id);
