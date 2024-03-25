@@ -6,14 +6,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./scss/main.css">
+  <style>
+    /* Critical css */
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      display: flex;
+    }
+  </style>
+  <link rel="stylesheet" href="./scss/main.css" media="print" onload="this.media='all'">
   <title>HabitHUB | #100DaysOfCode</title>
 </head>
 <body>
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <a href="#today" id="link" class="sidebar__logo">
-      <img src="./imgs/logo.png" alt="Logo">
+      <img src="./imgs/logo.svg" alt="Logo">
+      <img src="./imgs/logo-text.svg" alt="HabitHUB">
     </a>
     <nav class="sidebar__nav">
       <h3 class="sidebar__title">Tasks</h3>
@@ -27,7 +41,7 @@
     <!-- HEADER -->
     <header class="header">
       <div class="header__profile">
-        <div class="header__dark">
+        <div class="header__theme-toggle">
           <img src="./imgs/sun.svg" alt="D">
         </div>
         <div class="header__notif" data-count="0">
@@ -101,6 +115,30 @@
         todo.getStoredData("#today", data);
       }, 1000);
     };
+
+    const themeToggleButton = document.querySelector(".header__theme-toggle");
+
+    localStorage.setItem("theme", localStorage.getItem("theme") || "light");
+
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+    }
+
+    if (themeToggleButton) {
+        themeToggleButton.onclick = () => {
+        // Toggle page theme
+        document.body.classList.toggle("dark");
+
+        // Update localstorage theme value
+        if (document.body.classList.contains("dark")) {
+          localStorage.setItem("theme", "dark")
+        } else {
+          localStorage.setItem("theme", "light")
+        }
+        console.log(localStorage.getItem("theme"));
+      }
+    }
+    
 
   </script>
 </body>
