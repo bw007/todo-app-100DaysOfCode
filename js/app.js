@@ -331,7 +331,7 @@ class Todo {
       emptyText.textContent = "Nothing here yet...";
 
       const emptyImg = document.createElement("img");
-      emptyImg.setAttribute("src", "./imgs/empty.jpg");
+      emptyImg.setAttribute("src", "./imgs/empty.png");
 
       empty.append(emptyImg, emptyText);
       list.innerHTML = "";
@@ -379,13 +379,16 @@ class Todo {
 
         let sp = document.createElement("span");
         sp.textContent = item.title;
+        sp.title = item.title;
 
         let p = document.createElement("p");
         p.textContent = item.desc;
+        p.title = item.desc;
 
         let a = document.createElement("a");
         a.setAttribute("href", `#${item.tag}`);
         a.textContent = item.tag?.split("-").join(" ");
+        a.title = item.tag?.split("-").join(" ");
 
         a.onclick = () => {
           window.location = `#${item.tag}`;
