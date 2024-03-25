@@ -384,3 +384,71 @@
     background-color: #f1f1f1;
   }
 }
+
+
+@mixin index($bg-color, $color) {
+  .notif {
+    background-color: #48C1B585;
+    p {
+      color: $color;
+    }
+  }
+  
+  .sidebar {
+    background: $bg-color;
+    &__title {
+      color: $color;
+    }
+    &__logo {
+      img:last-child {
+        filter: brightness(0) invert(1);
+        opacity: 0.6;
+      }
+    }
+    &__link {
+      color: $color;
+      &--active {
+        color: #222831;
+      }
+    }
+  }
+  
+  .main {
+    background-color: $bg-color;
+  }
+
+  .header {
+    background: $bg-color;
+    &__profile {
+      div {
+        background: #ebecee30;
+        img {
+          filter: brightness(0) invert(1);
+        }
+      }
+    }
+  }
+
+  .wrap {
+    &__title {
+      color: $color;
+    }
+    &__empty {
+      h4 {
+        color: $color;
+      }
+    }
+  }
+}
+
+@mixin dark-theme($bg-color, $color) {
+  @include index($bg-color, $color);
+}
+
+.dark {
+  @include dark-theme(#222831, #EEEEEE);
+}
+
+@media (prefers-color-scheme: dark) {
+  @include dark-theme(#222831, #EEEEEE);
+}
