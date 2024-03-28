@@ -194,7 +194,6 @@
 }
 .wrap__item {
   width: 100%;
-  background-color: #FCF5C7;
   font-size: 16px;
   padding: 10px 25px;
   display: flex;
@@ -259,10 +258,10 @@
   border-radius: 4px;
 }
 .wrap input:hover + label::before {
-  background-color: rgba(246, 177, 122, 0.3764705882);
+  background-color: rgba(245, 108, 108, 0.3137254902);
 }
 .wrap input:checked + label::before {
-  background-color: #F6B17A;
+  background-color: #F56C6C;
 }
 
 .modal {
@@ -307,7 +306,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
 }
 .modal__input, .modal__select {
   outline: none;
@@ -330,11 +329,31 @@
   background-color: transparent;
   text-transform: capitalize;
 }
+.modal__colors {
+  display: flex;
+  width: 100%;
+  padding: 0 15px;
+  gap: 15px;
+}
+.modal__colors label {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.modal__colors input {
+  display: none;
+}
+.modal__colors input:checked + label {
+  box-shadow: 0 0 1px 3px rgba(0, 0, 0, 0.2);
+}
 .modal__btns {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
+  margin-top: 15px;
 }
 .modal__btn {
   font-size: 16px;
