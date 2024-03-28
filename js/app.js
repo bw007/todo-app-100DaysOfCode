@@ -10,6 +10,7 @@ class Todo {
     this.tags = tags?.reverse();
     this.menu = menu;
     this.data = data;
+    this.colors = ["#d9ecff", "#f8e3c5", "#fde2e2", "#d1edc4"];
   }
 
   // Create sidebar menu
@@ -163,6 +164,29 @@ class Todo {
         }
       });
 
+      let colorParent = document.createElement("div");
+      colorParent.classList.add("modal__colors");
+
+      this.colors.forEach(clr => {
+        let radio = document.createElement("input");
+        radio.classList.add("modal__input");
+        radio.setAttribute("required", true);
+        radio.setAttribute("type", "radio");
+        radio.setAttribute("name", "color");
+        radio.id = clr;
+        radio.value = clr;
+        if (this.colors[0] == clr) radio.checked = true;
+
+        let radioLabel = document.createElement("label");
+        radioLabel.setAttribute("for", clr);
+        radioLabel.style.backgroundColor = clr
+        radioLabel.classList.add("modal__label");
+
+        colorParent.append(radio, radioLabel);
+      });
+
+      modalForm.appendChild(colorParent);
+
       let btnParent = document.createElement("div");
       btnParent.classList.add("modal__btns");
 
@@ -240,8 +264,9 @@ class Todo {
             el.classList.remove("modal__input--danger")
           }
         });
-
-        if (inp == 3) {
+        console.log(inp);
+        if (inp > 3) {
+          console.log(data);
           modalForm.reset();
           inputs.forEach(el => {
             el.classList.remove("modal__input--danger")
@@ -249,6 +274,7 @@ class Todo {
           modal.classList.add("modal__hidden");
 
           if (type == "edit" && id) {
+            console.log(data);
             this.data = [ 
               ...storedData.map(item => {
                 if (item.id != id) return item;
@@ -298,7 +324,7 @@ class Todo {
       main.append(addBtn);
     }
 
-    addBtn.onclick = (e) => {
+    addBtn.onclick = () => {
       this.createModal("new");
     };
   }
@@ -310,7 +336,7 @@ class Todo {
     title.textContent = hash.slice(1).split("-").join(" ");
 
     if (data.length) {
-      if (this.tags.includes(hash.slice(1))) {
+      if (this.tags.includes(hash.slice(1)) && data.filter(f => f.tag == hash.slice(1)).length) {
         this.renderStoredData(data.filter(item => item.tag == hash.slice(1)));
       } else {
         switch (hash) {
@@ -320,25 +346,34 @@ class Todo {
           case "#all":
             this.renderStoredData(data);
             break;
+          default:
+            this.emptyData();
+            break;
         }
       }
     } else {
-      const list = document.querySelector(".wrap__inner");
-      let empty = document.createElement("div");
-      empty.classList.add("wrap__empty");
-
-      const emptyText = document.createElement("h4");
-      emptyText.textContent = "Nothing here yet...";
-
-      const emptyImg = document.createElement("img");
-      emptyImg.setAttribute("src", "./imgs/empty.png");
-
-      empty.append(emptyImg, emptyText);
-      list.innerHTML = "";
-      list.appendChild(empty);
+      this.emptyData();
     }
   }
   // --------------------------
+
+  // Empty data
+  emptyData() {
+    const list = document.querySelector(".wrap__inner");
+    let empty = document.createElement("div");
+    empty.classList.add("wrap__empty");
+
+    const emptyText = document.createElement("h4");
+    emptyText.textContent = "Nothing here yet...";
+
+    const emptyImg = document.createElement("img");
+    emptyImg.setAttribute("src", "./imgs/empty.png");
+
+    empty.append(emptyImg, emptyText);
+    list.innerHTML = "";
+    list.appendChild(empty);
+  }
+  // 
 
   // Render stored data in page
   renderStoredData(data) {
@@ -355,6 +390,7 @@ class Todo {
       data.forEach((item, i) => {
         let el = document.createElement("div");
         el.classList.add("wrap__item");
+        el.style.backgroundColor = item.color;
         
         let inp = document.createElement("input");
         inp.setAttribute("type", "checkbox");
