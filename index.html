@@ -112,7 +112,7 @@
       setTimeout(() => {
         window.location = "#today";
         todo.createMenu();
-        todo.getStoredData("#today", data);
+        todo.getStoredData("#today", JSON.parse(localStorage.getItem("data")));
       }, 1000);
     };
 
@@ -128,18 +128,15 @@
         themeToggleButton.onclick = () => {
         // Toggle page theme
         document.body.classList.toggle("dark");
-
         // Update localstorage theme value
         if (document.body.classList.contains("dark")) {
           localStorage.setItem("theme", "dark")
         } else {
           localStorage.setItem("theme", "light")
         }
-        console.log(localStorage.getItem("theme"));
       }
     }
     
-
   </script>
 </body>
 </html>
