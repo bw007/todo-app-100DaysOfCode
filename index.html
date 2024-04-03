@@ -108,7 +108,7 @@
 
     bell.onclick = () => {
       if (bell.dataset.count > 0) todo.notifMessage(`Today you have ${bell.dataset.count} tasks`);
-
+  
       setTimeout(() => {
         window.location = "#today";
         todo.createMenu();

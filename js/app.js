@@ -311,7 +311,9 @@ class Todo {
           setTimeout(() => {
             this.notifMessage(type);
             this.createMenu();
-            this.renderStoredData(filteredData);
+            console.log(filteredData);
+            if (filteredData.length) this.renderStoredData(filteredData);
+            else this.emptyData();
           }, 100);
         }
       }
@@ -345,9 +347,10 @@ class Todo {
       if (this.tags.includes(hash.slice(1)) && data.filter(f => f.tag == hash.slice(1)).length) {
         this.renderStoredData(data.filter(item => item.tag == hash.slice(1)));
       } else {
+        let todayTasks = data.filter(item => convertDate(item.deadline) == convertDate(new Date()))
         switch (hash) {
           case "#today":
-            this.renderStoredData(data.filter(item => convertDate(item.deadline) == convertDate(new Date())));
+            todayTasks.length ? this.renderStoredData(todayTasks) : this.emptyData();
             break;
           case "#all":
             this.renderStoredData(data);
