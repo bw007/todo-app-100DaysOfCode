@@ -18,11 +18,126 @@
       font-family: "Poppins", sans-serif;
       display: flex;
     }
+    .loading {
+      position: fixed;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      background-color: #00000099;
+    }
+    .loading__box {
+      width: 60px;
+      height: 60px;
+      border: 2px solid orange;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      padding: 2px;
+      gap: 2px;
+    }
+    .loading__box span {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+    }
+    .loading__box span:first-child {
+      background-color: #337ecc;
+      animation: load-1 6.5s linear infinite;
+      animation-delay: 0.5s;
+    }
+    .loading__box span:nth-child(2) {
+      background-color: #b88230;
+      animation: load 6.5s linear infinite;
+    }
+    .loading__box span:last-child {
+      background-color: #c45656;
+      animation: load-2 6.5s linear infinite;
+      animation-delay: 1s;
+    }
+    @keyframes load {
+      0% {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+      }
+      25% {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+      }
+      50% {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+      }
+      75% {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+      }
+      100% {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+      }
+    }
+    @keyframes load-1 {
+      0% {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+      }
+      25% {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+      }
+      50% {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+      }
+      75% {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+      }
+      100% {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+      }
+    }
+    @keyframes load-2 {
+      0% {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+      }
+      25% {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+      }
+      50% {
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+      }
+      75% {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+      }
+      100% {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+      }
+    }
   </style>
   <link rel="stylesheet" href="./scss/main.css" media="print" onload="this.media='all'">
   <title>HabitHUB | #100DaysOfCode</title>
 </head>
 <body>
+  <!-- Loading -->
+  <div class="loading">
+    <div class="loading__box">
+      <span id="loading__item-1"></span>
+      <span id="loading__item-2"></span>
+      <span id="loading__item-3"></span>
+    </div>
+  </div>
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <a href="#today" id="link" class="sidebar__logo">
@@ -64,6 +179,16 @@
   <script src="./js/helper/func.js"></script>
   <script src="./js/app.js"></script>
   <script>
+
+    const loading = document.querySelector(".loading");
+    setTimeout(() => {
+      loading.style.opacity = "0";
+      loading.style.transition = "opacity 0.35s linear";
+      setTimeout(() => {
+        loading.remove();
+      }, 350);
+    }, 4000);
+
     const collection = [
       {
         text: "Name your new task",
@@ -108,7 +233,7 @@
 
     bell.onclick = () => {
       if (bell.dataset.count > 0) todo.notifMessage(`Today you have ${bell.dataset.count} tasks`);
-
+  
       setTimeout(() => {
         window.location = "#today";
         todo.createMenu();

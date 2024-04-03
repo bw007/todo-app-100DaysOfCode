@@ -169,7 +169,6 @@ class Todo {
 
       this.colors.forEach(clr => {
         let radio = document.createElement("input");
-        radio.classList.add("modal__input");
         radio.setAttribute("required", true);
         radio.setAttribute("type", "radio");
         radio.setAttribute("name", "color");
@@ -212,10 +211,16 @@ class Todo {
       if (id) {
         const data = storedData.find(item => item.id == id);
         for (const key in data) {
-          let inputElement = modalForm.querySelector(`[name="${key}"]`);
-            if (inputElement) {
-              inputElement.value = data[key];
-            }
+          let inputElement;
+          if (key == "color") {
+            inputElement = modalForm.querySelector(`[id="${data.color}"]`);
+            inputElement.checked = true;
+          } else {
+            inputElement = modalForm.querySelector(`[name="${key}"]`);
+          }
+          if (inputElement) {
+            inputElement.value = data[key];
+          }
         }
       }
 
@@ -258,14 +263,15 @@ class Todo {
         let inp = 0;
         inputs.forEach(el => {
           if (!el.value.trim()) {
-            el.classList.add("modal__input--danger")
+            el.classList.add("modal__input--danger");
           } else {
+            console.log(inputs);
             inp++;
             el.classList.remove("modal__input--danger")
           }
         });
         console.log(inp);
-        if (inp > 3) {
+        if (inp == 3) {
           console.log(data);
           modalForm.reset();
           inputs.forEach(el => {
@@ -305,7 +311,9 @@ class Todo {
           setTimeout(() => {
             this.notifMessage(type);
             this.createMenu();
-            this.renderStoredData(filteredData);
+            console.log(filteredData);
+            if (filteredData.length) this.renderStoredData(filteredData);
+            else this.emptyData();
           }, 100);
         }
       }
@@ -339,9 +347,10 @@ class Todo {
       if (this.tags.includes(hash.slice(1)) && data.filter(f => f.tag == hash.slice(1)).length) {
         this.renderStoredData(data.filter(item => item.tag == hash.slice(1)));
       } else {
+        let todayTasks = data.filter(item => convertDate(item.deadline) == convertDate(new Date()))
         switch (hash) {
           case "#today":
-            this.renderStoredData(data.filter(item => convertDate(item.deadline) == convertDate(new Date())));
+            todayTasks.length ? this.renderStoredData(todayTasks) : this.emptyData();
             break;
           case "#all":
             this.renderStoredData(data);
